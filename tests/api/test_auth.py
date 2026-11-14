@@ -18,3 +18,12 @@ def test_signup_verify_login(auth):
     auth.verify_email(tok)
     hiker = auth.login_with_password(email)
     assert hiker["verified_at"]
+
+
+def test_actors_are_isolated(make_actor):
+    host = make_actor()
+    hiker = make_actor()
+    assert host.hiker is not None
+    assert hiker.hiker is not None
+    assert host.hiker["id"] != hiker.hiker["id"]
+    assert host.http.cookies["access_token"] != hiker.http.cookies["access_token"]
