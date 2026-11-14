@@ -1,6 +1,5 @@
-import muster_pytest.models
-from muster_pytest.models import Outing, Hiker
 from muster_pytest import models as m
+from muster_pytest.models import Outing
 
 print(f"running {__name__}")
 
