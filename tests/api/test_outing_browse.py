@@ -19,3 +19,7 @@ def test_browse_pagination_has_no_overlap(outings):
     assert len(ids1) + len(ids2) == 10
     assert len(ids1) == 5 == len(ids2)
     assert ids1 & ids2 == set()
+
+
+def test_browse_with_wrong_cursor(outings):
+    outings.browse(limit=5, after="abc", expected=400)

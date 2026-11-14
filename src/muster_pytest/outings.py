@@ -1,16 +1,23 @@
 import httpx
 
+from muster_pytest.envelope import unwrap
+
 
 class OutingClient:
     def __init__(self, http: httpx.Client):
         self.http = http
 
-    def browse(self, limit: int | None = None, after: str | None = None) -> dict:
+    def browse(
+        self,
+        limit: int | None = None,
+        after: str | None = None,
+        *,
+        expected: int = 200,
+    ) -> dict | None:
         params = {}
-        if limit:
+        if limit is not None:
             params["limit"] = limit
-        if after:
+        if after is not None:
             params["after"] = after
         resp = self.http.get("/outings", params=params)
-        resp.raise_for_status()
-        return resp.json()["data"]
+        return unwrap(resp, expected)
