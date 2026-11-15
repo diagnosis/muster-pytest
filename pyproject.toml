@@ -1,7 +1,7 @@
 [project]
 name = "muster-pytest"
 version = "0.1.0"
-description = "Add your description here"
+description = "API test suite for Muster (pytest, httpx, Pydantic)"
 readme = "README.md"
 authors = [
     { name = "diagnosis", email = "demirkansafa@gmail.com" }
@@ -12,8 +12,6 @@ dependencies = [
     "psycopg[binary]>=3.3.9",
     "pydantic>=2.14.3",
 ]
-
-[project.scripts]
 
 [build-system]
 requires = ["uv_build>=0.13.8,<0.14.0"]

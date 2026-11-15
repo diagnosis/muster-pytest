@@ -1,4 +1,6 @@
-BASE_URL = "http://localhost:8088/api"
+import pytest
+
+from muster_pytest.envelope import ApiError
 
 
 def test_browse_pages_match_single_request(make_actor, outings):
@@ -18,4 +20,9 @@ def test_browse_pages_match_single_request(make_actor, outings):
 
 
 def test_browse_with_wrong_cursor(outings):
-    outings.browse(limit=5, after="abc", expected=400)
+    with pytest.raises(ApiError) as e:
+        outings.browse(limit=5, after="abc")
+
+    assert e.value.status == 400
+    assert e.value.code == "bad_request"
+    assert e.value.message == "bad request"
