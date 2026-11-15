@@ -14,5 +14,6 @@ def unique_identity() -> tuple[str, str]:
     email = f"{f_name}.{l_name}.{t}@{HOST}"
     return name, email
 
-def tag()->str:
+
+def tag() -> str:
     return uuid.uuid4().hex[:6]

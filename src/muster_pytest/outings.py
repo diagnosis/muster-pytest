@@ -23,6 +23,10 @@ class OutingClient:
         resp = self.http.get("/outings", params=params)
         return unwrap(resp, expected)
 
-    def create(self,*, expected:int = 201, **overrides) -> dict|None:
-        resp =self.http.post("/outings", json=unique_outing(**overrides))
+    def create(self, *, expected: int = 201, **overrides) -> dict | None:
+        resp = self.http.post("/outings", json=unique_outing(**overrides))
+        return unwrap(resp, expected)
+
+    def details(self, outing_id: str, *, expected: int = 200) -> dict | None:
+        resp = self.http.get(f"/outings/{outing_id}")
         return unwrap(resp, expected)
