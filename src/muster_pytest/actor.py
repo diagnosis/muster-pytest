@@ -7,12 +7,13 @@ from muster_pytest.db import mint_verification_token
 from muster_pytest.identity import unique_identity
 from muster_pytest.join_requests import JoinRequestClient
 from muster_pytest.outings import OutingClient
+from muster_pytest.schemas import Hiker
 
 
 @dataclass
 class Actor:
     http: httpx.Client
-    hiker: dict
+    hiker: Hiker
     email: str
     auth: AuthClient
     outings: OutingClient
@@ -24,7 +25,7 @@ def create_actor(base_url: str) -> Actor:
     auth = AuthClient(http)
     name, email = unique_identity()
     hiker = auth.signup(email=email, name=name)
-    tok = mint_verification_token(hiker["id"])
+    tok = mint_verification_token(hiker.id)
     auth.verify_email(token=tok, expected=200)
     hiker = auth.login_with_password(email=email)
     return Actor(

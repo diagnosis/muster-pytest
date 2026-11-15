@@ -1,6 +1,7 @@
 import httpx
 
-from muster_pytest.envelope import unwrap
+from muster_pytest.envelope import unwrap, unwrap_as
+from muster_pytest.schemas import Hiker
 
 
 class AuthClient:
@@ -15,7 +16,7 @@ class AuthClient:
         experience: str = "beginner",
         *,
         expected: int = 201,
-    ) -> dict | None:
+    ) -> Hiker:
         resp = self.http.post(
             "/auth/signup",
             json={
@@ -25,7 +26,7 @@ class AuthClient:
                 "experience": experience,
             },
         )
-        return unwrap(resp, expected)
+        return unwrap_as(resp, Hiker, expected)
 
     def verify_email(self, token: str, *, expected: int = 200) -> dict | None:
         resp = self.http.post("/auth/verify-email", json={"token": token})
@@ -33,8 +34,8 @@ class AuthClient:
 
     def login_with_password(
         self, email: str, password: str = "Passw0rd!123", *, expected: int = 200
-    ) -> dict | None:
+    ) -> Hiker:
         resp = self.http.post(
             "/auth/login", json={"email": email, "password": password}
         )
-        return unwrap(resp, expected)
+        return unwrap_as(resp, Hiker, expected)

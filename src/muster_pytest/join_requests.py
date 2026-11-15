@@ -1,6 +1,6 @@
 import httpx
 
-from muster_pytest.envelope import unwrap, unwrap_as
+from muster_pytest.envelope import unwrap_as
 from muster_pytest.schemas import JoinRequest, MessageResponse
 
 
@@ -28,5 +28,3 @@ class JoinRequestClient:
     def decline(self, request_id: str, *, expected: int = 200) -> MessageResponse:
         resp = self.http.post(f"/requests/{request_id}/decline")
         return unwrap_as(resp, MessageResponse, expected)
-
-

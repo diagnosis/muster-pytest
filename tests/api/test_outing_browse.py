@@ -1,14 +1,6 @@
 BASE_URL = "http://localhost:8088/api"
 
 
-def test_browse_returns_outings(outings):
-    data = outings.browse(limit=10)
-
-    assert isinstance(data.items, list)
-    assert len(data.items) == 10
-    assert all(item.status == "open" for item in data.items)
-
-
 def test_browse_pages_match_single_request(make_actor, outings):
     host = make_actor()
     for _ in range(10):

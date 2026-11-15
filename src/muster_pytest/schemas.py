@@ -6,7 +6,9 @@ from pydantic import BaseModel
 Difficulty = Literal["easy", "moderate", "hard"]
 Pace = Literal["relaxed", "moderate", "fast"]
 RequestStatus = Literal["requested", "accepted", "declined", "withdrawn", "removed"]
-Role =  Literal["rider", "driver"]
+Role = Literal["rider", "driver"]
+Experience = Literal["beginner", "intermediate", "experienced"]
+
 
 class Capacity(BaseModel):
     people_count: int
@@ -14,6 +16,7 @@ class Capacity(BaseModel):
     seats_short: int
     spots_left: int
     waiting_count: int
+
 
 class Outing(BaseModel):
     id: str
@@ -33,9 +36,11 @@ class Outing(BaseModel):
     status: str
     capacity: Capacity | None = None
 
+
 class Page(BaseModel):
     items: list[Outing]
     next_cursor: str | None = None
+
 
 class JoinRequest(BaseModel):
     id: str
@@ -47,18 +52,21 @@ class JoinRequest(BaseModel):
     guests: int
     requested_at: datetime
 
+
 class Member(BaseModel):
     hiker_id: str | None = None
     request_id: str | None = None
-    name:str
+    name: str
     experience: str
 
+
 class ListHiker(BaseModel):
-    name:str
-    role:Role
-    seats_offered:int
-    guests:int
+    name: str
+    role: Role
+    seats_offered: int
+    guests: int
     is_me: bool
+
 
 class Detail(BaseModel):
     outing: Outing
@@ -73,7 +81,19 @@ class Detail(BaseModel):
     seats_short: int
     spots_left: int
 
+
 class MessageResponse(BaseModel):
-    message:str
+    message: str
 
 
+class Hiker(BaseModel):
+    id: str
+    email: str
+    name: str
+    experience: Experience
+    home_area: str | None = None
+    bio: str | None = None
+    gender: str | None = None
+    created_at: datetime
+    updated_at: datetime
+    verified_at: datetime | None = None

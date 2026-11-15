@@ -1,8 +1,8 @@
 import httpx
 
-from muster_pytest.envelope import unwrap, unwrap_as
+from muster_pytest.envelope import unwrap_as
 from muster_pytest.outing_data import unique_outing
-from muster_pytest.schemas import Outing, Detail, Page
+from muster_pytest.schemas import Detail, Outing, Page
 
 
 class OutingClient:
