@@ -1,7 +1,8 @@
 import httpx
 
-from muster_pytest.envelope import unwrap
+from muster_pytest.envelope import unwrap, unwrap_as
 from muster_pytest.outing_data import unique_outing
+from muster_pytest.schemas import Outing, Detail, Page
 
 
 class OutingClient:
@@ -14,19 +15,19 @@ class OutingClient:
         after: str | None = None,
         *,
         expected: int = 200,
-    ) -> dict | None:
+    ) -> Page:
         params = {}
         if limit is not None:
             params["limit"] = limit
         if after is not None:
             params["after"] = after
         resp = self.http.get("/outings", params=params)
-        return unwrap(resp, expected)
+        return unwrap_as(resp, Page, expected)
 
-    def create(self, *, expected: int = 201, **overrides) -> dict | None:
+    def create(self, *, expected: int = 201, **overrides) -> Outing:
         resp = self.http.post("/outings", json=unique_outing(**overrides))
-        return unwrap(resp, expected)
+        return unwrap_as(resp, Outing, expected)
 
-    def details(self, outing_id: str, *, expected: int = 200) -> dict | None:
+    def details(self, outing_id: str, *, expected: int = 200) -> Detail:
         resp = self.http.get(f"/outings/{outing_id}")
-        return unwrap(resp, expected)
+        return unwrap_as(resp, Detail, expected)
