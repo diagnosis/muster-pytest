@@ -9,16 +9,20 @@ def test_browse_returns_outings(outings):
     assert all(item["status"] == "open" for item in data["items"])
 
 
-def test_browse_pagination_has_no_overlap(outings):
-    page1 = outings.browse(limit=5)
-    cursor = page1["next_cursor"]
+def test_browse_pages_match_single_request(make_actor, outings):
+    host = make_actor()
+    for _ in range(10):
+        host.outings.create()
 
-    page2 = outings.browse(limit=5, after=cursor)
-    ids1 = {item["id"] for item in page1["items"]}
-    ids2 = {item["id"] for item in page2["items"]}
-    assert len(ids1) + len(ids2) == 10
-    assert len(ids1) == 5 == len(ids2)
-    assert ids1 & ids2 == set()
+    first_ten = outings.browse(limit=10)
+    page1 = outings.browse(limit=5)
+    page2 = outings.browse(limit=5, after=page1.get("next_cursor"))
+
+    ids_all = [item["id"] for item in first_ten["items"]]
+    ids_page1 = [item["id"] for item in page1["items"]]
+    ids_page2 = [item["id"] for item in page2["items"]]
+
+    assert ids_page1 + ids_page2 == ids_all
 
 
 def test_browse_with_wrong_cursor(outings):

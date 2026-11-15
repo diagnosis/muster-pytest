@@ -9,7 +9,10 @@ HOST = "test.dev"
 def unique_identity() -> tuple[str, str]:
     f_name = random.choice(ADJ)
     l_name = random.choice(NOUN)
-    tag = uuid.uuid4().hex[:6]
-    name = f"{f_name.capitalize()} {l_name.capitalize()} {tag}"
-    email = f"{f_name}.{l_name}.{tag}@{HOST}"
+    t = tag()
+    name = f"{f_name.capitalize()} {l_name.capitalize()} {t}"
+    email = f"{f_name}.{l_name}.{t}@{HOST}"
     return name, email
+
+def tag()->str:
+    return uuid.uuid4().hex[:6]
