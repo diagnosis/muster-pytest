@@ -26,7 +26,7 @@ def create_actor(base_url: str) -> Actor:
     name, email = unique_identity()
     hiker = auth.signup(email=email, name=name)
     tok = mint_verification_token(hiker.id)
-    auth.verify_email(token=tok, expected=200)
+    auth.verify_email(token=tok)
     hiker = auth.login_with_password(email=email)
     return Actor(
         http=http,
