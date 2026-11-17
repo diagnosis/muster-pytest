@@ -1,6 +1,6 @@
 import httpx
 
-from muster_pytest.envelope import unwrap, unwrap_as
+from muster_pytest.envelope import unwrap_as
 from muster_pytest.schemas import Hiker, MessageResponse
 
 
