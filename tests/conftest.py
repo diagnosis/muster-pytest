@@ -5,6 +5,7 @@ import pytest
 
 from muster_pytest.actor import create_actor
 from muster_pytest.auth import AuthClient
+from muster_pytest.join_requests import JoinRequestClient
 from muster_pytest.outings import OutingClient
 
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8088/api")
@@ -26,6 +27,9 @@ def outings(api):
 def auth(api):
     return AuthClient(api)
 
+@pytest.fixture
+def join_request(api):
+    return JoinRequestClient(api)
 
 @pytest.fixture
 def make_actor():

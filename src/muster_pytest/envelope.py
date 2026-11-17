@@ -2,6 +2,14 @@ import httpx
 from pydantic import BaseModel
 
 
+class ApiError(Exception):
+    def __init__(self, status: int, code: str, message: str):
+        super().__init__(f"{status} {code}: {message}")
+        self.status = status
+        self.code = code
+        self.message = message
+
+
 def unwrap(res: httpx.Response, expected: int = 200) -> dict | None:
     if not res.is_success:
         error = res.json()["error"]
@@ -22,9 +30,3 @@ def unwrap_as[T: BaseModel](
     return model.model_validate(unwrap(resp, expected))
 
 
-class ApiError(Exception):
-    def __init__(self, status: int, code: str, message: str):
-        super().__init__(f"{status} {code}: {message}")
-        self.status = status
-        self.code = code
-        self.message = message
