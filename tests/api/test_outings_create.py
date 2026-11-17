@@ -12,19 +12,25 @@ def test_host_can_create_outing(make_actor):
 
 
 @pytest.mark.parametrize(
-    "overrides, code",
+    "overrides, status_code ,code",
     [
-        pytest.param({"max_size": 0}, "bad_request", id="zero max_size"),
-        pytest.param({"title": ""}, "validation_error", id="no title"),
-        pytest.param({"host_seats": -1}, "bad_request", id="negative host seats"),
+        pytest.param({"max_size": 0}, 400, "bad_request", id="zero max_size"),
+        pytest.param({"title": ""}, 400, "validation_error", id="no title"),
+        pytest.param({"host_seats": -1}, 400, "bad_request", id="negative host seats"),
         pytest.param(
-            {"starts_at": "2020-01-01T00:00:00Z"}, "bad_request", id="starts at past"
+            {"starts_at": "2020-01-01T00:00:00Z"},
+            400,
+            "bad_request",
+            id="starts at past",
         ),
-        pytest.param({"difficulty": "extreme"}, "bad_request", id="wrong difficulty"),
+        pytest.param(
+            {"difficulty": "extreme"}, 400, "bad_request", id="wrong difficulty"
+        ),
     ],
 )
-def test_create_rejects_invalid_input(make_actor, overrides, code):
+def test_create_rejects_invalid_input(make_actor, overrides, status_code, code):
     host = make_actor()
     with pytest.raises(ApiError) as e:
         host.outings.create(**overrides)
     assert code == e.value.code
+    assert status_code == e.value.status
