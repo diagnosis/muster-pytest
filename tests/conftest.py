@@ -1,3 +1,5 @@
+import os
+
 import httpx
 import pytest
 
@@ -5,7 +7,7 @@ from muster_pytest.actor import create_actor
 from muster_pytest.auth import AuthClient
 from muster_pytest.outings import OutingClient
 
-BASE_URL = "http://localhost:8088/api"
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:8088/api")
 
 
 @pytest.fixture

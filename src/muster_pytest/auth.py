@@ -1,7 +1,7 @@
 import httpx
 
 from muster_pytest.envelope import unwrap, unwrap_as
-from muster_pytest.schemas import Hiker
+from muster_pytest.schemas import Hiker, MessageResponse
 
 
 class AuthClient:
@@ -28,9 +28,9 @@ class AuthClient:
         )
         return unwrap_as(resp, Hiker, expected)
 
-    def verify_email(self, token: str, *, expected: int = 200) -> dict | None:
+    def verify_email(self, token: str, *, expected: int = 200) -> MessageResponse:
         resp = self.http.post("/auth/verify-email", json={"token": token})
-        return unwrap(resp, expected)
+        return unwrap_as(resp, MessageResponse, expected)
 
     def login_with_password(
         self, email: str, password: str = "Passw0rd!123", *, expected: int = 200

@@ -9,3 +9,5 @@ def test_join_outing_success(make_actor):
     assert detail.people_count == 4
     assert len(detail.roster) == 1
     assert detail.waiting_count == 0
+    hiker_detail = hiker.outings.details(outing_id, 200)
+    assert hiker_detail.my_request.status == "accepted"

@@ -47,11 +47,11 @@ def hours_from_now_iso(hours: int) -> str:
 
 
 def unique_outing(**overrides) -> dict:
-    o = random.choice(OUTINGS)
+    picked = random.choice(OUTINGS)
     t = tag()
     return {
-        **o,
-        "title": f"{o['title']} {t}",
+        **picked,
+        "title": f"{picked['title']} {t}",
         "starts_at": hours_from_now_iso(random.choice(HOURS)),
         **overrides,
     }
